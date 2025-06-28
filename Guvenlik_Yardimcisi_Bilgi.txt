@@ -1,0 +1,519 @@
+GÜVENLİK YARDIMCISI - TEKNİK BİLGİ DOSYASI
+===========================================
+
+PROJE GENEL BAKIŞ
+=================
+Güvenlik Yardımcısı, herkesin kullanımına uygun olarak geliştirilmiş
+kapsamlı bir güvenlik tarama ve analiz aracıdır. Program, sistem güvenliğini
+artırmak için çeşitli tarama ve analiz modülleri sunar.
+
+Sürüm: 2.0 (Final)
+Geliştirici: Yiğit Yücel
+Son Güncelleme: 2025
+Lisans: MIT
+
+TEKNİK MİMARİ
+=============
+
+1. ANA BİLEŞENLER
+-----------------
+1.1. main.py (121KB, 2688 satır)
+    - Ana GUI uygulaması ve kullanıcı arayüzü
+    - CustomTkinter tabanlı modern arayüz
+    - Modüler yapı ile farklı tarama modülleri
+    - Şifreleme ve güvenlik yönetimi
+    - API anahtarı yönetimi ve şifreleme
+    - Beyaz liste yönetimi arayüzü
+    - Sağ tık menüsü ve bağlam işlemleri
+    - Gerçek zamanlı log sistemi
+
+1.2. system_scanner.py (48KB, 1013 satır)
+    - Gelişmiş sistem tarama motoru
+    - Çapraz görüş (cross-view) analizi
+    - Dinamik risk puanlama sistemi
+    - Korelasyon motoru
+    - Bellek analizi (PEB Unlinking, kod bütünlüğü)
+    - ADS (Alternate Data Streams) tespiti
+    - İmza tabanlı rootkit tespiti
+    - Beyaz liste filtreleme sistemi
+
+1.3. pii_scanner.py (12KB, 313 satır)
+    - Hassas veri tarama motoru
+    - Çoklu format desteği (PDF, DOCX, XLSX, TXT, CSV)
+    - Gelişmiş regex pattern'ları
+    - Luhn algoritması ile kredi kartı doğrulama
+    - Maskeleme sistemi
+    - Satır numarası takibi
+
+1.4. url_checker.py (8.2KB, 223 satır)
+    - URL güvenlik kontrol motoru
+    - Çoklu API entegrasyonu (VirusTotal, URLhaus, urlscan.io)
+    - WHOIS analizi
+    - Risk değerlendirme algoritması
+    - Detaylı raporlama sistemi
+
+1.5. api_utils.py (6.8KB, 170 satır)
+    - API entegrasyonları
+    - HTTP istekleri ve yanıt işleme
+    - Hata yönetimi ve retry mekanizması
+    - Rate limiting ve API limit kontrolü
+
+2. YARDIMCI MODÜLLER
+-------------------
+2.1. whitelist_utils.py (1.2KB, 36 satır)
+    - Beyaz liste yönetimi
+    - JSON tabanlı veri saklama
+    - Ekleme/çıkarma işlemleri
+    - Veri doğrulama
+
+2.2. regex_patterns.py (267B, 5 satır)
+    - PII tespiti için regex pattern'ları
+    - TCKN, kredi kartı, IBAN, e-posta, telefon
+    - Optimize edilmiş regex'ler
+
+2.3. signatures.json (1.5KB, 42 satır)
+    - Bilinen rootkit imzaları
+    - Hash tabanlı tespit
+    - Süreç ve dosya imzaları
+    - Güncellenebilir imza veritabanı
+
+3. YAPILANDIRMA DOSYALARI
+------------------------
+3.1. config/config.ini
+    - API anahtarları (şifrelenmiş)
+    - PII tarama ayarları
+    - Güvenlik yapılandırması
+    - Şifre hash'i ve salt değeri
+
+3.2. whitelist.json
+    - Beyaz liste verileri
+    - Süreç isimleri
+    - Dosya yolları
+    - JSON formatında saklama
+
+3.3. requirements.txt
+    - Python bağımlılıkları
+    - Gerekli kütüphaneler
+    - Versiyon bilgileri
+
+GÜVENLİK ÖZELLİKLERİ
+===================
+
+1. ŞİFRELEME ALTYAPISI
+---------------------
+1.1. PBKDF2 Anahtar Türetme
+    - 100.000 iterasyon
+    - SHA-256 hash algoritması
+    - 32-byte anahtar üretimi
+    - Salt tabanlı güvenlik
+
+1.2. Fernet Şifreleme
+    - AES-128-CBC şifreleme
+    - Base64 encoding
+    - Güvenli API anahtarı saklama
+    - Otomatik anahtar rotasyonu
+
+1.3. Salt Üretimi
+    - Rastgele 16-byte salt
+    - Her kurulum için benzersiz
+    - Base64 encoding ile saklama
+    - Güvenli salt yönetimi
+
+2. RİSK PUANLAMA SİSTEMİ
+-----------------------
+2.1. Dinamik Ağırlıklandırma
+    - Gizli işlemler: 9.0 puan
+    - Bellek modülü değiştirilmiş: 7.0 puan
+    - Bellek modülü unlinked: 8.0 puan
+    - Bellek enjeksiyonları: 5.0 puan
+    - Şüpheli sürücüler: 3.0 puan
+    - Ağ anomalileri: 2.0 puan
+    - İmzasız süreçler: 4.0 puan
+    - Geçici dizinden çalışan süreçler: 2.5 puan
+
+2.2. Risk Seviyeleri
+    - 🛑 KRİTİK: Onaylanmış ve ilişkili tehditler
+    - 🔴 YÜKSEK: 6.0+ puan
+    - ⚠️ ORTA: 3.0-5.9 puan
+    - ℹ️ BİLGİ: 0-2.9 puan
+
+3. KORELASYON MOTORU
+-------------------
+3.1. İlişkili Tehdit Tespiti
+    - Aynı PID'ye ait bulgular
+    - Bellek ve ağ anomalileri
+    - Süreç ve sürücü ilişkileri
+    - Otomatik gruplandırma
+
+3.2. Hiyerarşik Görünüm
+    - Risk seviyelerine göre kategorizasyon
+    - İlişkili bulguların gösterimi
+    - Detaylı açıklamalar
+    - Kolay navigasyon
+
+BELLEK ANALİZİ
+=============
+
+1. PEB UNLINKING TESPİTİ
+-----------------------
+1.1. PEB (Process Environment Block) Analizi
+    - Modül listesi kontrolü
+    - Gizli modül tespiti
+    - Bellek bütünlüğü kontrolü
+    - Sistem API karşılaştırması
+
+1.2. Kod Bütünlüğü Kontrolü
+    - Hash tabanlı doğrulama
+    - Dosya imzası kontrolü
+    - Bellek içeriği analizi
+    - Şüpheli değişiklik tespiti
+
+2. BELLEK ENJEKSİYONU TESPİTİ
+---------------------------
+2.1. Şüpheli Bellek Bölgeleri
+    - Yüksek bellek adresleri
+    - Şüpheli izinler
+    - Kod enjeksiyonu belirtileri
+    - Dinamik kod yükleme
+
+2.2. Kritik Süreç Taraması
+    - Sistem süreçlerinin analizi
+    - Güvenlik açığı tespiti
+    - Anormal davranış kontrolü
+    - Performans optimizasyonu
+
+ADS TESPİTİ
+==========
+
+1. ALTERNATE DATA STREAMS
+------------------------
+1.1. NTFS Dosya Sistemi Analizi
+    - Gizli veri akışları
+    - Sistem dizinleri taraması
+    - Şüpheli dosya tespiti
+    - Güvenlik riski değerlendirmesi
+
+1.2. Gizli Veri Tespiti
+    - Stream analizi
+    - İçerik kontrolü
+    - Risk puanlama
+    - Raporlama
+
+API ENTEGRASYONLARI
+==================
+
+1. VIRUSTOTAL
+------------
+1.1. URL Analizi
+    - Tehdit skoru
+    - Antivirüs sonuçları
+    - Detaylı rapor
+    - API limit yönetimi
+
+1.2. Dosya Analizi
+    - Hash tabanlı kontrol
+    - Tehdit tespiti
+    - Güvenlik skoru
+    - Detaylı bilgi
+
+2. URLHAUS
+---------
+2.1. Zararlı URL Tespiti
+    - Veritabanı kontrolü
+    - Tehdit kategorileri
+    - Tarih bilgileri
+    - Kaynak analizi
+
+3. URLSCAN.IO
+------------
+3.1. Web Sitesi Analizi
+    - Screenshot analizi
+    - HTTP başlıkları
+    - JavaScript analizi
+    - Güvenlik taraması
+
+4. WHOIS ANALİZİ
+---------------
+4.1. Alan Adı Bilgileri
+    - Kayıt tarihi
+    - Bitiş tarihi
+    - Kayıt firması
+    - Ülke bilgisi
+
+PII TARAMA MOTORU
+================
+
+1. REGEX PATTERN'LARI
+--------------------
+1.1. TCKN Tespiti
+    - 11 haneli format kontrolü
+    - Algoritma doğrulama
+    - Geçerlilik kontrolü
+
+1.2. Kredi Kartı Tespiti
+    - Luhn algoritması
+    - Format kontrolü
+    - BIN analizi
+    - Geçerlilik doğrulama
+
+1.3. IBAN Tespiti
+    - Ülke kodu kontrolü
+    - Checksum doğrulama
+    - Format analizi
+
+1.4. E-posta Tespiti
+    - RFC standartları
+    - Domain kontrolü
+    - Format doğrulama
+
+1.5. Telefon Tespiti
+    - Türkiye formatları
+    - Uluslararası formatlar
+    - Geçerlilik kontrolü
+
+2. DOSYA FORMAT DESTEĞİ
+---------------------
+2.1. PDF Analizi
+    - PyPDF2 kütüphanesi
+    - Metin çıkarma
+    - Satır numarası takibi
+
+2.2. DOCX Analizi
+    - python-docx kütüphanesi
+    - Paragraf analizi
+    - Format korunması
+
+2.3. XLSX Analizi
+    - openpyxl kütüphanesi
+    - Hücre analizi
+    - Çoklu sayfa desteği
+
+2.4. TXT/CSV Analizi
+    - UTF-8 encoding
+    - Satır bazlı analiz
+    - Hata toleransı
+
+KULLANICI ARAYÜZÜ
+================
+
+1. MODERN GUI
+------------
+1.1. CustomTkinter
+    - Dark mode desteği
+    - Modern tasarım
+    - Responsive layout
+    - Cross-platform uyumluluk
+
+1.2. Renk Paleti
+    - Tutarlı renk şeması
+    - Risk seviyesi renklendirmesi
+    - Görsel hiyerarşi
+    - Erişilebilirlik
+
+2. ETKİLEŞİMLİ ÖZELLİKLER
+------------------------
+2.1. Sağ Tık Menüsü
+    - Dosya konumunu açma
+    - İşlem sonlandırma
+    - Beyaz listeye ekleme
+    - Detay görüntüleme
+
+2.2. Hiyerarşik Görünüm
+    - Ağaç yapısı
+    - Kategorize edilmiş bulgular
+    - Kolay navigasyon
+    - Detaylı bilgi
+
+2.3. Gerçek Zamanlı Log
+    - Canlı tarama takibi
+    - İlerleme çubuğu
+    - Durum güncellemeleri
+    - Hata bildirimleri
+
+BEYAZ LİSTE SİSTEMİ
+==================
+
+1. AKILLI FİLTRELEME
+-------------------
+1.1. Süreç İsimleri
+    - Güvenilir süreçler
+    - Sistem süreçleri
+    - Kullanıcı tanımlı listeler
+
+1.2. Dosya Yolları
+    - Güvenilir konumlar
+    - Sistem dizinleri
+    - Uygulama klasörleri
+
+1.3. Otomatik Filtreleme
+    - Tarama sırasında uygulama
+    - Performans optimizasyonu
+    - Yanlış pozitif azaltma
+
+2. YÖNETİM ARAYÜZÜ
+-----------------
+2.1. Kolay Ekleme/Çıkarma
+    - Sağ tık menüsü
+    - Ayarlar paneli
+    - Toplu işlemler
+
+2.2. Veri Doğrulama
+    - Format kontrolü
+    - Duplikasyon kontrolü
+    - Güvenlik kontrolü
+
+PERFORMANS OPTİMİZASYONU
+=======================
+
+1. ÇOKLU İŞ PARÇACIĞI
+--------------------
+1.1. Paralel Tarama
+    - Thread-based processing
+    - CPU optimizasyonu
+    - Bellek yönetimi
+    - İptal mekanizması
+
+1.2. Asenkron İşlemler
+    - Non-blocking GUI
+    - Responsive arayüz
+    - Hata yönetimi
+    - İlerleme takibi
+
+2. BELLEK YÖNETİMİ
+-----------------
+2.1. Chunk-based Processing
+    - Büyük dosya desteği
+    - Bellek optimizasyonu
+    - Garbage collection
+    - Resource management
+
+2.2. Lazy Loading
+    - On-demand loading
+    - Cache management
+    - Memory efficiency
+    - Performance improvement
+
+HATA YÖNETİMİ
+============
+
+1. KAPSAMLI LOGLAMA
+------------------
+1.1. Merkezi Log Sistemi
+    - app_error.log
+    - system_scanner.log
+    - UTF-8 encoding
+    - Structured logging
+
+1.2. Hata Kategorileri
+    - Kritik hatalar
+    - Uyarılar
+    - Bilgi mesajları
+    - Debug bilgileri
+
+2. KULLANICI BİLDİRİMLERİ
+------------------------
+2.1. Modern Dialog'lar
+    - Custom messagebox
+    - Şifre girişi
+    - Onay dialogları
+    - Hata bildirimleri
+
+2.2. Gerçek Zamanlı Bildirimler
+    - Progress updates
+    - Status messages
+    - Error notifications
+    - Success confirmations
+
+GÜVENLİK UYARILARI
+=================
+
+1. YÜKSEK RİSK DURUMUNDA
+-----------------------
+- Hemen sistem taramasını durdurun
+- Şüpheli işlemleri sonlandırın
+- Ağ bağlantısını kesin
+- Profesyonel güvenlik uzmanına danışın
+- Tam sistem taraması yapın
+- Sistem geri yükleme noktası oluşturun
+
+2. ORTA RİSK DURUMUNDA
+---------------------
+- Şüpheli işlemleri detaylı inceleyin
+- Başlangıç öğelerini gözden geçirin
+- Ağ bağlantılarını kontrol edin
+- Güvenlik duvarı kurallarını gözden geçirin
+- Düzenli tarama yapın
+- Beyaz listeyi güncelleyin
+
+3. DÜŞÜK RİSK DURUMUNDA
+----------------------
+- Bulguları düzenli olarak takip edin
+- Güvenlik yazılımını güncel tutun
+- Sistem güncellemelerini kontrol edin
+- Beyaz listeyi güncelleyin
+- Haftalık sistem taraması yapın
+
+TEKNİK DESTEK
+============
+
+1. LOG DOSYALARI
+---------------
+- app_error.log: Uygulama hataları
+- system_scanner.log: Tarama detayları
+- config/config.ini: Yapılandırma dosyası
+- whitelist.json: Beyaz liste verileri
+- signatures.json: İmza veritabanı
+
+2. YAPILANDIRMA
+--------------
+- API anahtarları yönetimi
+- PII tarama ayarları
+- Güvenlik yapılandırması
+- Şifre yönetimi
+
+3. SORUN GİDERME
+---------------
+- Yönetici hakları kontrolü
+- API limit yönetimi
+- Bellek optimizasyonu
+- Performans ayarları
+
+LİSANS VE YASAL UYARILAR
+======================
+
+1. MIT LİSANSI
+-------------
+- Açık kaynak lisans
+- Ticari kullanım izni
+- Değiştirme ve dağıtım izni
+- Sorumluluk reddi
+
+2. GÜVENLİK UYARILARI
+--------------------
+⚠️ UYARI: Bu araç güvenlik analizi için tasarlanmıştır.
+- Bulguları dikkatle değerlendirin
+- Yanlış pozitif sonuçlar olabilir
+- Her bulgu kritik değildir
+- Gerekirse profesyonel güvenlik uzmanlarına danışın
+- Sistem kararlılığını etkileyebilecek işlemler yapmadan önce düşünün
+
+3. ETİK KULLANIM
+---------------
+- Yalnızca kendi sistemlerinizde kullanın
+- Başkalarının sistemlerine izinsiz erişim yapmayın
+- Bulguları etik kurallar çerçevesinde değerlendirin
+- Profesyonel güvenlik standartlarına uyun
+
+GELİŞTİRİCİ BİLGİLERİ
+====================
+
+Geliştirici: Yiğit Yücel
+Sürüm: 2.0 (Final)
+Son Güncelleme: 2025
+Lisans: MIT
+Platform: Windows 10/11 (64-bit)
+Python Versiyonu: 3.8+
+
+Bu teknik bilgi dosyası, Güvenlik Yardımcısı uygulamasının
+detaylı teknik özelliklerini ve kullanım kılavuzunu içerir.
+Güncel bilgiler için resmi dokümantasyonu takip edin. 

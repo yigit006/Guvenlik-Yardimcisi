@@ -1,0 +1,260 @@
+GÜVENLİK YARDIMCISI - KULLANIM KILAVUZU
+=========================================
+
+1. GENEL BAKIŞ
+-------------
+Güvenlik Yardımcısı, herkesin kullanımına uygun olarak geliştirilmiş
+kapsamlı bir güvenlik tarama ve analiz aracıdır. Program, sistem güvenliğini
+artırmak için çeşitli tarama ve analiz modülleri sunar.
+
+Sürüm: 2.0 (Final)
+Geliştirici: Yiğit Yücel
+Son Güncelleme: 2025
+
+2. KURULUM VE İLK YAPILANDIRMA
+-----------------------------
+2.1. Sistem Gereksinimleri
+    - Windows 10/11 (64-bit)
+    - Python 3.8 veya üstü
+    - Yönetici hakları (tam tarama için)
+    - En az 4GB RAM
+    - İnternet bağlantısı (API kullanımı için)
+
+2.2. Kurulum Adımları
+    1. Python 3.8+ yükleyin
+    2. Gerekli kütüphaneleri yükleyin:
+       pip install -r requirements.txt
+    3. Uygulamayı başlatın: python main.py
+    4. Yönetici olarak çalıştırın (otomatik istek)
+
+2.3. İlk Yapılandırma
+    1. Ayarlar menüsüne gidin
+    2. API anahtarlarınızı girin:
+       - VirusTotal: https://www.virustotal.com/gui/join-us
+       - URLhaus: https://urlhaus.abuse.ch/api/
+       - urlscan.io: https://urlscan.io/user/signup/
+    3. Şifrenizi belirleyin (API anahtarlarını korumak için)
+    4. Taranacak PII tiplerini seçin
+
+3. ANA MODÜLLER VE KULLANIM
+---------------------------
+3.1. Sistem Tarayıcı
+    Özellikler:
+    - Çapraz görüş (cross-view) ile rootkit tespiti
+    - Dinamik risk puanlama sistemi
+    - Korelasyon motoru ile ilişkili tehdit tespiti
+    - İmza tabanlı rootkit belirtisi tespiti
+    - Gelişmiş beyaz liste filtreleme
+    - Bellek analizi (PEB Unlinking, kod bütünlüğü)
+    - ADS (Alternate Data Streams) tespiti
+
+    Kullanım:
+    1. Sol menüden "Sistem Tarayıcı" seçin
+    2. "Sistem Taramasını Başlat" butonuna tıklayın
+    3. Tarama sürecini gerçek zamanlı log ile takip edin
+    4. Sonuçları sol panelde kategorize şekilde inceleyin
+    5. Sağ panelde güvenlik yapılandırması özetini görün
+
+    Bulgu Yönetimi:
+    - Bulgulara sağ tıklayarak bağlam menüsünü açın:
+      * 📁 Dosya Konumunu Aç: Dosyanın bulunduğu klasörü açın
+      * ❌ İşlemi Sonlandır: PID varsa süreci sonlandırın
+      * 👍 Beyaz Listeye Ekle: Güvenilir öğeyi beyaz listeye ekleyin
+    - Bulgulara çift tıklayarak detayları görün
+
+3.2. Hassas Veri Tarayıcı (PII Scanner)
+    Özellikler:
+    - Çoklu format desteği (PDF, DOCX, XLSX, TXT, CSV)
+    - Gelişmiş PII tespiti (TCKN, kredi kartı, IBAN, e-posta, telefon)
+    - Luhn algoritması ile kredi kartı doğrulama
+    - Maskeleme sistemi ile güvenli görüntüleme
+    - Satır numarası takibi ile detaylı raporlama
+
+    Kullanım:
+    1. Sol menüden "PII Tarayıcı" seçin
+    2. "Dosya Seç" butonu ile tarayacağınız dosyayı seçin
+    3. Taranacak veri tiplerini ayarlardan belirleyin
+    4. "Taramayı Başlat" butonuna tıklayın
+    5. Sonuçları hiyerarşik ağaç yapısında inceleyin
+    6. Bulgu detaylarını görmek için çift tıklayın
+
+3.3. URL Güvenlik Kontrolü
+    Özellikler:
+    - Çoklu API entegrasyonu (VirusTotal, URLhaus, urlscan.io)
+    - WHOIS analizi ile alan adı bilgileri
+    - Çok faktörlü risk değerlendirmesi
+    - Detaylı güvenlik raporu
+    - Tıklanabilir linkler ile manuel kontrol
+
+    Kullanım:
+    1. Sol menüden "URL Kontrol" seçin
+    2. Kontrol edilecek URL'yi girin
+    3. "Denetle" butonuna tıklayın
+    4. Gerçek zamanlı ilerleme çubuğunu takip edin
+    5. Detaylı güvenlik raporunu inceleyin
+    6. Tıklanabilir linklerle manuel kontrol yapın
+
+4. GELİŞMİŞ ÖZELLİKLER
+---------------------
+4.1. Beyaz Liste Yönetimi
+    Erişim: Ayarlar > "Beyaz Listeyi Aç ve Yönet"
+    
+    Özellikler:
+    - Süreç isimlerini beyaz listeye ekleme/çıkarma
+    - Dosya yollarını beyaz listeye ekleme/çıkarma
+    - Zebra şerit görünümü ile kolay yönetim
+    - Anında değişiklik uygulama
+
+    Kullanım:
+    1. Ayarlar menüsünden "Beyaz Listeyi Aç ve Yönet" butonuna tıklayın
+    2. Mevcut beyaz liste öğelerini görün
+    3. "Kaldır" butonları ile öğeleri çıkarın
+    4. Sistem taraması sırasında sağ tık menüsünden yeni öğeler ekleyin
+
+4.2. Dinamik Risk Puanlama
+    Sistem, her bulgu için ağırlıklandırılmış risk puanı hesaplar:
+    
+    Risk Faktörleri:
+    - Gizli işlemler: 9.0 puan
+    - Bellek modülü değiştirilmiş: 7.0 puan
+    - Bellek modülü unlinked: 8.0 puan
+    - Bellek enjeksiyonları: 5.0 puan
+    - Şüpheli sürücüler: 3.0 puan
+    - Ağ anomalileri: 2.0 puan
+    - İmzasız süreçler: 4.0 puan
+    - Geçici dizinden çalışan süreçler: 2.5 puan
+
+    Risk Seviyeleri:
+    - 🛑 KRİTİK: Onaylanmış ve ilişkili tehditler
+    - 🔴 YÜKSEK: 6.0+ puan
+    - ⚠️ ORTA: 3.0-5.9 puan
+    - ℹ️ BİLGİ: 0-2.9 puan
+
+4.3. Korelasyon Motoru
+    Sistem, farklı bulguları analiz ederek ilişkili tehditleri tespit eder:
+    - Aynı PID'ye ait bellek ve ağ anomalileri
+    - İlişkili süreç ve sürücü bulguları
+    - Hiyerarşik görünüm ile ilişki gösterimi
+    - Otomatik tehdit gruplandırma
+
+4.4. Bellek Analizi
+    Gelişmiş bellek tarama özellikleri:
+    - PEB Unlinking: Gizli modül tespiti
+    - Kod Bütünlüğü: Hash tabanlı modül doğrulama
+    - Bellek Enjeksiyonu: Şüpheli bellek bölgelerinin tespiti
+    - Kritik Süreç Taraması: Sistem süreçlerinin detaylı analizi
+
+4.5. ADS Tespiti
+    Alternate Data Streams ile gizli dosya akışlarının tespiti:
+    - NTFS dosya sistemi analizi
+    - Gizli veri akışlarının bulunması
+    - Sistem dizinlerinin detaylı taraması
+
+5. GÜVENLİK ÖNERİLERİ
+--------------------
+5.1. Yüksek Risk Durumunda (🛑 KRİTİK)
+    - Hemen sistem taramasını durdurun
+    - Şüpheli işlemleri sonlandırın
+    - Ağ bağlantısını kesin
+    - Profesyonel güvenlik uzmanına danışın
+    - Tam sistem taraması yapın
+    - Sistem geri yükleme noktası oluşturun
+
+5.2. Orta Risk Durumunda (🔴 YÜKSEK)
+    - Şüpheli işlemleri detaylı inceleyin
+    - Başlangıç öğelerini gözden geçirin
+    - Ağ bağlantılarını kontrol edin
+    - Güvenlik duvarı kurallarını gözden geçirin
+    - Düzenli tarama yapın
+    - Beyaz listeyi güncelleyin
+
+5.3. Düşük Risk Durumunda (⚠️ ORTA/ℹ️ BİLGİ)
+    - Bulguları düzenli olarak takip edin
+    - Güvenlik yazılımını güncel tutun
+    - Sistem güncellemelerini kontrol edin
+    - Beyaz listeyi güncelleyin
+    - Haftalık sistem taraması yapın
+
+6. SORUN GİDERME
+--------------
+6.1. Sistem Tarama Sorunları
+    - Yönetici olarak çalıştırın
+    - Antivirüs programını geçici olarak devre dışı bırakın
+    - Yeterli RAM olduğundan emin olun (en az 4GB)
+    - Windows Defender'ı kontrol edin
+    - Sistem güncellemelerini yapın
+
+6.2. API Sorunları
+    - İnternet bağlantınızı kontrol edin
+    - API anahtarlarınızı doğrulayın
+    - API limitlerini kontrol edin
+    - Şifrenizi doğru girdiğinizden emin olun
+
+6.3. Bellek Tarama Sorunları
+    - Yönetici haklarıyla çalıştırın
+    - Kritik sistem işlemlerini atlayın
+    - Beyaz listeyi genişletin
+    - Tarama derinliğini azaltın
+    - Sistem performansını kontrol edin
+
+6.4. Şifreleme Sorunları
+    - config/config.ini dosyasını kontrol edin
+    - Şifrenizi sıfırlamak için password_hash satırını silin
+    - Uygulamayı yeniden başlatın
+
+6.5. Performans Sorunları
+    - Beyaz listeyi genişletin
+    - Kritik sistem işlemlerini atlayın
+    - Bellek kullanımını kontrol edin
+    - Çoklu iş parçacığı sayısını azaltın
+
+7. GÜVENLİK İPUÇLARI
+-------------------
+7.1. Düzenli Bakım
+    - Haftalık sistem taraması yapın
+    - Beyaz listeyi düzenli güncelleyin
+    - API anahtarlarınızı güvenli tutun
+    - Log dosyalarını inceleyin
+    - Sistem güncellemelerini kontrol edin
+
+7.2. Güvenlik En İyi Uygulamaları
+    - Güçlü şifreler kullanın
+    - API anahtarlarınızı paylaşmayın
+    - Şüpheli bulguları dikkatle değerlendirin
+    - Profesyonel yardım almaktan çekinmeyin
+    - Yanlış pozitif sonuçları göz önünde bulundurun
+
+7.3. Performans Optimizasyonu
+    - Güvenilir öğeleri beyaz listeye ekleyin
+    - Kritik sistem işlemlerini atlayın
+    - Büyük dosyaları chunk'lar halinde işleyin
+    - Paralel tarama ile hızlandırma yapın
+
+8. TEKNİK DESTEK
+---------------
+- Log dosyaları: app_error.log, system_scanner.log
+- Yapılandırma: config/config.ini
+- Beyaz liste: whitelist.json
+- İmza veritabanı: signatures.json
+- Geliştirici: Yiğit Yücel
+- Sürüm: 2.0 (Final)
+
+9. İLETİŞİM
+----------
+Geliştirici: Yiğit Yücel
+Sürüm: 2.0 (Final)
+Lisans: MIT
+Son Güncelleme: 2025
+
+10. LİSANS
+---------
+Bu program MIT lisansı altında lisanslanmıştır.
+
+11. GÜVENLİK UYARILARI
+---------------------
+⚠️ UYARI: Bu araç güvenlik analizi için tasarlanmıştır. 
+- Bulguları dikkatle değerlendirin
+- Yanlış pozitif sonuçlar olabilir
+- Her bulgu kritik değildir
+- Gerekirse profesyonel güvenlik uzmanlarına danışın
+- Sistem kararlılığını etkileyebilecek işlemler yapmadan önce düşünün 
